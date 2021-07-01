@@ -1,4 +1,4 @@
-ActiveRecord::Schema.define(version: 2021_06_08_071629) do
+ActiveRecord::Schema.define(version: 2021_07_01_075446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -10,6 +10,14 @@ ActiveRecord::Schema.define(version: 2021_06_08_071629) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_blogs_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "blog_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_comments_on_blog_id"
   end
 
   create_table "favorites", force: :cascade do |t|
@@ -31,6 +39,7 @@ ActiveRecord::Schema.define(version: 2021_06_08_071629) do
   end
 
   add_foreign_key "blogs", "users"
+  add_foreign_key "comments", "blogs"
   add_foreign_key "favorites", "blogs"
   add_foreign_key "favorites", "users"
 end
