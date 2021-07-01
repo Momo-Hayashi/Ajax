@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
     @comment = @blog.comments.build (comment_params)
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to blog_path(@blog) }
+        format.js { render :index }
       else
         format.html { redirect_to blog_path(@blog), notice: '投稿できませんでした...' }
       end
@@ -14,6 +14,6 @@ class CommentsController < ApplicationController
 
   private
   def comment_params
-    params.require(:comment).permit(:blog_id, :comment, :content)
+    params.require(:comment).permit(:blog_id, :content)
   end
 end
