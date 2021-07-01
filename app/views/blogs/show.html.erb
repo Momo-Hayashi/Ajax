@@ -1,11 +1,27 @@
-<h1>ブログ詳細画面</h1>
-<p>投稿者：<%= @blog.user.name %></p>
-<p>タイトル: <%= @blog.title %></p>
-<p>内容: <%= @blog.content %></p>
-<% unless @blog.user_id == current_user.id %>
-  <% if @favorite.present? %>
-    <%= link_to 'お気に入り解除する', favorite_path(id: @favorite.id), method: :delete, class: 'btn btn-danger' %>
-  <% else %>
-    <%= link_to 'お気に入りする', favorites_path(blog_id: @blog.id), method: :post, class: 'btn btn-primary' %>
+<div class="container">
+
+  <h1>ブログ詳細画面</h1>
+
+  <p>投稿者：<%= @blog.user.name %></p>
+  <p>タイトル: <%= @blog.title %></p>
+  <p>内容： <%= @blog.content %></p>
+
+  <p>--- コメント一覧 ---</p>
+  <!-- このcomments_areaというHTMLのidを取得して、そのdivの部分だけを更新する -->
+  <div id="comments_area">
+    <!-- 投稿された「コメント一覧」をブログの詳細ページに表示するためのrender -->
+    <!-- render partial: 'ファイル名', locals: { '部分テンプレート内で使う変数': '変数に入れる値' } -->
+    <%= render partial: 'comments/index', locals: { comments: @comments, blog: @blog } %>
+  </div>
+  <!-- 「コメント入力欄」をブログの詳細ページに表示するためのrender -->
+  <%= render partial: 'comments/form', locals: { comment: @comment, blog: @blog } %>
+
+  <% unless @blog.user_id == current_user.id %>
+    <% if @favorite.present? %>
+      <%= link_to 'お気に入り解除する', favorite_path(id: @favorite.id), method: :delete, class: 'btn btn-danger' %>
+    <% else %>
+      <%= link_to 'お気に入りする', favorites_path(blog_id: @blog.id), method: :post, class: 'btn btn-primary' %>
+    <% end %>
   <% end %>
-<% end %>
+
+</div>
